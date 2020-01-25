@@ -61,14 +61,9 @@ set(INSTALL_TARGETS_DEFAULT_ARGS
   ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 )
 
-option(OCTOVIS_QT5 "Link Octovis against Qt5?" ON)
-
 # Look for required libraries:
 FIND_PACKAGE(OpenGL REQUIRED)
-if(NOT OCTOVIS_QT5)
-  FIND_PACKAGE(Qt4 REQUIRED)
-endif(NOT OCTOVIS_QT5)
-
+FIND_PACKAGE(Qt5 COMPONENTS Core Gui OpenGL Widgets Xml REQUIRED)
 FIND_PACKAGE(QGLViewer REQUIRED)
 
 MESSAGE(STATUS "viewer octovis will be built")
@@ -133,11 +128,6 @@ install(FILES
   "${PROJECT_BINARY_DIR}/InstallFiles/octovis-config.cmake"
   "${PROJECT_BINARY_DIR}/InstallFiles/octovis-config-version.cmake"
   DESTINATION "${CMAKE_INSTALL_DATADIR}/octovis")
-
-# #installation:
-# # store all header files to install:
-file(GLOB octovis_HDRS  *.h *.hxx *.hpp)
-install(FILES ${octovis_HDRS} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/octovis")
 
 # Install catkin package.xml
 install(FILES package.xml DESTINATION "${CMAKE_INSTALL_DATADIR}/octovis")

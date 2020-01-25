@@ -10,7 +10,7 @@ find_path(QGLViewer_INCLUDE_DIR
   PATH_SUFFIXES QGLViewer)
 
 find_library(QGLViewer_LIBRARIES
-  NAMES QGLViewer QGLViewer2 QGLViewer-qt5 QGLViewer-qt4)
+  NAMES QGLViewer QGLViewer2 QGLViewer-qt5)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(

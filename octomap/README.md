@@ -14,14 +14,12 @@ REQUIREMENTS
 
 * For only the octomap library: cmake and a regular build environment (gcc)
 * For HTML documentation: doxygen (optional)
-* For the viewer octovis: Qt4, OpenGL, QGLViewer (optional)
+* For the viewer octovis: Qt5, OpenGL, QGLViewer (optional)
 
 
 Skip to WINDOWS for tips on compilation under Windows. You can install all dependencies on Ubuntu by running:
 
-    sudo apt-get install cmake doxygen libqt4-dev libqt4-opengl-dev libqglviewer-dev-qt4
-       
-(Note: for older releases of Ubuntu you need to exchange the last package name with `libqglviewer-qt4-dev`)
+    sudo apt-get install cmake doxygen qtbase5-dev libqglviewer-dev-qt5
        
 INSTALLATION
 ------------
@@ -159,7 +157,7 @@ Last tested with MSVC 2013 and 2015 (Community Edition).
 Instead of building the complete distribution (octomap, octovis, and dynamicEDT3D)
 you can only build octomap by proceeding as described above but in the `octomap`
 subdirectory. This can help you getting started when there are problems with
-octovis and Qt4.
+octovis and Qt5.
 
 As verification, you can run the unit tests in Visual Studio by building the
 `RUN_TESTS` project or by using ctest on the command prompt:
