@@ -71,45 +71,44 @@ is welcome ("it works" is nice too :-))
         mingw32-make
 
 
-### Microsoft Visual Studio 2010 ###
+### Microsoft Visual Studio ###
 
-1. Download the QT library with Visual Studio 20xx support (currently 2008)
-   (http://qt.nokia.com/downloads)
-2. To build the qglviewer library
-  - open a windows shell (e.g., from the START-Menu -> QT) 
+Adjust the paths as necessary depending on where you unpacked zip files
+or cloned any git repositories. Here, we are building for x64 and
+the projects are place in subdirectories under C:\Devel.
+Compiler version used is MSVC 2019, which is able to use Qt compiled
+for MSVC 2017.
 
-            cd octovis/src/extern/QGLViewer
-            qmake -t vclib QGLViewer.pro -spec win32-msvc2010    (ignore any warnings)
-  - Load the generated file QGLViewer.vcxproj and build the project.
+1. Download the [Qt Online Installer](https://www.qt.io/download-qt-installer)
+   and install a suitable version of the library, e.g. MSVC 2017 64-bit.
+
+2. To build the qglviewer library, [download a libQGLViewer zip file](http://libqglviewer.com/src/)
+   and extract it to C:\Devel.
+
+   Then, open a windows shell with the compiler environment setup.
+
+        Start Menu -> Visual Studio 2017 -> Visual Studio Tools -> VC -> x64 Native Tools Command Prompt for VS 2017
+
+   In that command prompt, run qmake and nmake.
+        cd C:\Devel\libQGLViewer-2.6.3
+        C:\Qt\5.12.3\msvc2017_64\bin\qmake.exe
+        nmake /nologo
+
     This will give you the needed files QGLViewer2.(dll,lib).
 
-3. The viewer should be built along with the rest of the octomap package.
+3. The viewer octovis should be built along with the rest of the octomap package.
    These steps will create a solution file for the library and the viewer:
-    - Start the cmake-gui and set the code directory to the octomap main directory.
-    - Set the build directory to, e.g., `/build`
-    - Press "Generate", select the appropriate generator, e. g. "Visual Studio 10".
-      This generates a solution file octomap-distribution.sln
-    - Load this file and build the project.
-  
-Some more hints on compiling with Visual Studio (these may be necessary depending
-on the VS version and CMake version):
-* When compiling QGLViewer, modify the output path in "Properties->Linker->
-  General->Output". Remove the "debug" and "release" prefix so the libs are 
-  installed in the base dir.
-* For the octivis-shared target, add the Qt lib path ("C:\path\to\Qt\4.7.2\lib") 
-  to "Properties->Linker->General->Additional Library Directories", and add 
-  the following Qt libs as dependencies in "Properties->Linker->Input->
-  Additional Dependencies": QtCore4.lib, QtOpenGL4.lib, QtGui4.lib and 
-  QtXml4.lib (and the debug versions of them to the Debug configuration)
-* If the debug version of octovis throws this error: "QWidget: Must construct a 
-  QApplication before a QPaintDevice", it is linking to the release version of 
-  QGLViewer. Change the library dependency of octovis and octovis-shared to the 
-  debug version QGLViewerd2.lib in "Properties->Linker->Input->Additional 
-  Dependencies".
-  
+
+       cd C:\Devel\octomap
+       mkdir build
+       cd build
+
+       cmake .. -G "Visual Studio 16 2019" -A x64 -DQt5_DIR=C:\Qt\5.12.3\msvc2017_64\lib\cmake\Qt5 -DQGLViewer_BASE_DIR=C:\Devel\libQGLViewer-2.6.3
+
+   This generates a solution file octomap-distribution.sln
+   Load this file in Visual Studio and build the project.
+
 
 When executing octovis.exe, Windows needs to find the following 
 libraries, so make sure they are on the PATH or in the same 
 directory: QGLViewer2.dll, QtOpenGL4.dll, QTGui4.dll, QTCore4.dll
-
-

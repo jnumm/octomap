@@ -1,4 +1,6 @@
 
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 # Mac OS X seems to require special linker flags:
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework OpenGL")
@@ -29,13 +31,13 @@ set(octovis_HDRS
 
 # sources for viewer binary
 set(viewer_SRCS
-	src/main.cpp	
-	src/ViewerGui.cpp
-	src/ViewerWidget.cpp
-	src/ViewerSettings.cpp
-	src/ViewerSettingsPanel.cpp
-	src/ViewerSettingsPanelCamera.cpp
-	src/CameraFollowMode.cpp
+  src/main.cpp
+  src/ViewerGui.cpp
+  src/ViewerWidget.cpp
+  src/ViewerSettings.cpp
+  src/ViewerSettingsPanel.cpp
+  src/ViewerSettingsPanelCamera.cpp
+  src/CameraFollowMode.cpp
   # Resource files (icons, ...)
   src/icons.qrc
   # MOC srcs:
@@ -52,30 +54,22 @@ set(viewer_SRCS
   include/octovis/ViewerSettingsPanelCamera.ui
 )	
 
-#found QGLViewer include dir
-INCLUDE_DIRECTORIES(
-  ${QGLViewer_INCLUDE_DIR}
-)
-
-# Don't forget to include output directory, otherwise
-# the UI file won't be wrapped!
-include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_BINARY_DIR})
-
 
 # Library target 
 add_library(octovis-static STATIC ${viewerlib_SRCS})
 target_link_libraries(octovis-static
+  QGLViewer::QGLViewer
   Qt5::Core Qt5::Gui Qt5::OpenGL Qt5::Widgets Qt5::Xml
 )
 set_target_properties(octovis-static PROPERTIES OUTPUT_NAME octovis)
 
 add_library(octovis-shared SHARED ${viewerlib_SRCS})
 target_link_libraries(octovis-shared
+  QGLViewer::QGLViewer
   Qt5::Core Qt5::Gui Qt5::OpenGL Qt5::Widgets Qt5::Xml
   ${OPENGL_gl_LIBRARY} 
   ${OPENGL_glu_LIBRARY} 
   ${OCTOMAP_LIBRARIES}
-  ${QGLViewer_LIBRARIES}
 )
 set_target_properties(octovis-shared PROPERTIES
   OUTPUT_NAME octovis
@@ -96,8 +90,10 @@ add_executable(octovis ${viewer_SRCS})
 set_target_properties(octovis PROPERTIES AUTOMOC ON AUTORCC ON AUTOUIC ON)
 
 target_link_libraries(octovis 
-  ${QGLViewer_LIBRARIES}
+  QGLViewer::QGLViewer
   Qt5::Core Qt5::Gui Qt5::OpenGL Qt5::Widgets Qt5::Xml
+#  ${OPENGL_gl_LIBRARY}
+#  ${OPENGL_glu_LIBRARY}
   ${OCTOMAP_LIBRARIES}
   octovis-shared
 )
